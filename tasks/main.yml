@@ -1,0 +1,48 @@
+- name: Create container group
+  group:
+    name: "{{ container_group }}"
+    state: present
+
+- name: Create container user
+  user:
+    name: "{{ container_user }}"
+    group: "{{ container_group }}"
+
+- name: Check for docker
+  shell: docker > /dev/null 2>&1; echo $?
+  register: docker_exists
+  ignore_errors: true
+
+- name: Install docker
+  shell: curl -sSL https://get.docker.com | sh
+  when: docker_exists.stdout | int > 0
+
+- name: Create docker group
+  group:
+    name: docker
+    state: present
+
+- name: Add user to docker group
+  shell: usermod -aG docker {{ container_user }}
+  become: yes
+
+- name: Create container network
+  shell: "docker network create {{ container_network }} || true"
+  ignore_errors: true
+
+- name: Create directory for container files
+  file:
+    path: "{{ container_home_dir }}"
+    state: directory
+    owner: "{{ container_user }}"
+    group: "{{ container_group }}"
+
+- name: Add container docker compose
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ container_docker_compose }}"
+    owner: "{{ container_user }}"
+    group: "{{ container_group }}"
+
+- name: Start container
+  shell: "docker compose -f {{ container_docker_compose }} {{ container_docker_compose_action }}"
