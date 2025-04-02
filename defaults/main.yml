@@ -10,8 +10,8 @@ container_ansible_yml_managed_banner: |
   # again. To configure this file, see https://github.com/zeevo/ansible-role-container.
   # ===================================================================================
 container_name: container
-container_docker_restart_policy: always
+container_docker_restart_policy: unless-stopped
 container_volumes: []
 container_ports: []
-container_environment:
+container_environment: {}
 container_network: container_network

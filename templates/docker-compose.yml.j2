@@ -22,7 +22,7 @@ services:
       - {{ port }}
 {% endfor %}
 {% endif %}
-{% if container_environment | length > 0 %}
+{% if container_environment.items() | length > 0 %}
     environment:
 {% for key, val in container_environment.items() %}
       {{ key }}: {{ val }}
