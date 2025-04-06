@@ -1,0 +1,12 @@
+galaxy_info:
+  namespace: zeevo
+  author: zeevo
+  description: Run a container on a linux server
+  company: https://zeevo.io
+  license: MIT
+  min_ansible_version: "2.1"
+  galaxy_tags:
+    - containers
+    - docker
+
+dependencies: []
