@@ -46,3 +46,5 @@
 
 - name: Start container
   shell: "docker compose -f {{ container_docker_compose }} {{ container_docker_compose_action }}"
+  become: true
+  become_user: "{{ container_user }}"
